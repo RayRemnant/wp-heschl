@@ -19,7 +19,7 @@ function archon_product_init()
 
   $serverHost = getenv("SERVER_HOST");
 
-if(isset($serverHost)){
+if(!isset($serverHost) || empty($serverHost)){
 	$serverHost="http://localhost:3003";
 }
 
