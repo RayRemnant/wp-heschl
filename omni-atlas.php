@@ -282,15 +282,12 @@ add_action('rest_api_init', function () {
 			//SET HREFLANGS FIELD
 			$translations = pll_get_post_translations($post['id']);
 
+			
 			foreach ($translations as $language => $post_id) {
-				$lang_urls[$language] =  strtolower(str_replace(" ", "-", get_the_title($post_id)));
-				if($language == "en"){
-					$post_tags = wp_get_post_tags($post_id);
-
-					$tag_data = get_tag($post_tags[0]);
-					//$value['group'] = strtolower(str_replace(" ", "-", $tag_data->name));
-					update_post_meta($post['id'], 'group', strtolower(str_replace(" ", "-", $tag_data->name)));
+				if(str_contains(get_the_title($post_id), "Private:")){
+					continue;
 				}
+				$lang_urls[$language] =  strtolower(str_replace(" ", "-", get_the_title($post_id)));
 			}
 			$value['hreflangs'] = $lang_urls;
 
@@ -307,10 +304,18 @@ add_action('rest_api_init', function () {
 
 			$post_tags = wp_get_post_tags($post['id']);
 
-			foreach ($post_tags as $index => $tag_id) {
-				$tag_data = get_tag($tag_id);
-				//$value['tag'][$index]['id'] = $tag_id;
+			foreach ($post_tags as $index => $tag_obj) {
+				$tag_data = get_tag($tag_obj);
+				//$value['tag_obj'] = $tag_data;
 				$value['tags'][$index] = $tag_data->name;
+
+				//set group to english tag
+				$translations = pll_get_term_translations($tag_data->term_id);
+
+				$lang_tag_data = get_tag($translations["en"]);
+				$tag_slug = strtolower(str_replace(" ", "-", $lang_tag_data->name));
+
+				update_post_meta($post['id'], 'group', $tag_slug);
 			}
 
 			update_post_meta($post['id'], 'tags', $value['tags']);
@@ -347,16 +352,6 @@ function current_year_func()
 	return date("Y");
 }
 add_shortcode('current_year', 'current_year_func');
-
-
-/*disabling post preview button to avoid preview url being cached by CloudFlare*/
-function posttype_admin_css()
-{
-	echo '<style type="text/css">.editor-post-preview{display: none !important;}</style>';
-}
-add_action('admin_head-post-new.php', 'posttype_admin_css');
-add_action('admin_head-post.php', 'posttype_admin_css');
-
 
 add_filter('lang_query', function ($args, $request) {
 	if ($city = $request->get_param('lang')) {
