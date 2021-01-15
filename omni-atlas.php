@@ -103,8 +103,8 @@ add_action('rest_api_init', function () {
 
 			$tag_data = get_tag($tag['id']);
 
-			$value['name'] = $tag_data->name;
-			$value['slug'] = strtolower(str_replace(" ", "-", $value['name']));
+			$value['title'] = $tag_data->name;
+			$value['slug'] = strtolower(str_replace(" ", "-", $value['title']));
 
 			$value['language'] = pll_get_term_language($tag['id']);
 
@@ -152,10 +152,10 @@ add_action('rest_api_init', function () {
 
 			//$value['id'] = $category['id'];
 
-			$value['name'] = get_cat_name($category['id']);
+			$value['title'] = get_cat_name($category['id']);
 
 			//using name as slug in order to use same slug in different languages
-			$value['slug'] = strtolower(str_replace(" ", "-", $value['name']));
+			$value['slug'] = strtolower(str_replace(" ", "-", $value['title']));
 
 			$value['language'] = pll_get_term_language($category['id']);
 
