@@ -128,7 +128,7 @@ add_action('rest_api_init', function () {
 				}
 			}
 
-			$value['meta']['title'] = get_term_meta($tag['id'], '_seopress_titles_title', true) ?? $value['title'];
+			$value['meta']['title'] = empty(get_term_meta($tag['id'], '_seopress_titles_title', true)) ? $value['title'] : get_term_meta($tag['id'], '_seopress_titles_title', true);
 
 			$value['meta']['description'] = get_term_meta($tag['id'], '_seopress_titles_desc', true);
 
@@ -175,7 +175,7 @@ add_action('rest_api_init', function () {
 				$value['hreflangs'][$language] = strtolower(str_replace(" ", "-", $lang_category_data->name));
 			}
 
-			$value['meta']['title'] = get_term_meta($category['id'], '_seopress_titles_title', true) ?? $value['title'];
+			$value['meta']['title'] = empty(get_term_meta($category['id'], '_seopress_titles_title', true)) ? $value['title'] : get_term_meta($category['id'], '_seopress_titles_title', true);
 
 			$value['meta']['description'] = get_term_meta($category['id'], '_seopress_titles_desc', true);
 
@@ -326,7 +326,7 @@ add_action('rest_api_init', function () {
 			}
 
 			//THE REST...
-			$value['meta']['title'] = get_post_meta($post['id'], '_seopress_titles_title', true) ?? $value['title'];
+			$value['meta']['title'] = empty(get_post_meta($page['id'], '_seopress_titles_title', true)) ? $value['title'] : get_post_meta($page['id'], '_seopress_titles_title', true);
 
 			$value['meta']['description'] = get_post_meta($post['id'], '_seopress_titles_desc', true);
 
