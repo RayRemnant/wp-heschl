@@ -263,6 +263,9 @@ add_action('rest_api_init', function () {
 			$value['excerpt'] = get_the_excerpt($post['id']);
 			$value['author'] = get_the_author_meta('display_name', get_post_field('post_author', $post['id']));
 
+			$value['time']['published'] = get_option('gmt_offset') == 0 ? subStr(get_the_date('c', $post['id']), 0, 19)."Z" : get_the_date('c', $post['id']); 
+			$value['time']['modified'] = get_option('gmt_offset') == 0 ? subStr(get_the_modified_date('c', $post['id']), 0, 19)."Z" : get_the_modified_date('c', $post['id']); 
+
 			$image = pathinfo(get_the_post_thumbnail_url($post['id']));
 			if (!empty($image)) {
 				$value['image'] = str_replace("original/", "", $image['dirname'] . "/" . $image['filename']) ;
@@ -315,6 +318,7 @@ add_action('rest_api_init', function () {
 				$lang_tag_data = get_tag($translations["en"]);
 				$tag_slug = strtolower(str_replace(" ", "-", $lang_tag_data->name));
 
+				$value['group'] = $tag_slug;
 				update_post_meta($post['id'], 'group', $tag_slug);
 			}
 
