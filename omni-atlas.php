@@ -42,6 +42,7 @@ function clean_code($content)
 	$replacement   = '';
 	$content       = preg_replace($pattern, $replacement, $content);
 
+	//<PATH> is replaced during build on hydra-aeon
 	$pattern = '/href=\"#/i';
 	$replacement   = 'href="<PATH>#';
 	$content       = preg_replace($pattern, $replacement, $content);
@@ -174,6 +175,9 @@ add_action('rest_api_init', function () {
 				$lang_category_data = get_category($category_id);
 				$value['hreflangs'][$language] = strtolower(str_replace(" ", "-", $lang_category_data->name));
 			}
+
+			$value['time']['published'] = get_option('gmt_offset') == 0 ? subStr(get_the_date('c', $post['id']), 0, 19)."Z" : get_the_date('c', $post['id']); 
+			$value['time']['modified'] = get_option('gmt_offset') == 0 ? subStr(get_the_modified_date('c', $post['id']), 0, 19)."Z" : get_the_modified_date('c', $post['id']); 
 
 			$value['meta']['title'] = empty(get_term_meta($category['id'], '_seopress_titles_title', true)) ? $value['title'] : get_term_meta($category['id'], '_seopress_titles_title', true);
 
