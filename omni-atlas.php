@@ -203,12 +203,29 @@ add_action('rest_api_init', function () {
 		'get_callback' => function ($page) {
 
 			//$value["data"] = $page;
+			
+			$children = get_children(array(
+				'post_parent' => $page['id'],
+				'post_type'   => 'page',
+				'post_status' => 'publish')
+			);
+
+			if(!empty($children)){
+				$value["children"] = [];
+				$i = 0;
+				foreach ($children as $child){
+					$value['children'][$i] = ['name' => $child->post_title, 'slug' => strtolower(str_replace(" ", "-", $child->post_title))];
+					$i++;
+				}
+			}
 
 			$value['title'] = get_the_title($page['id']);
 			$value['excerpt'] = get_the_excerpt($page['id']);
 
-			$image = pathinfo(get_the_post_thumbnail_url($page['id']));
+			$image = get_the_post_thumbnail_url($page['id']);
+
 			if (!empty($image)) {
+				$image = pathinfo($image);
 				$value['image'] = $image['dirname'] . "/" . $image['filename'];
 			};
 
@@ -227,10 +244,11 @@ add_action('rest_api_init', function () {
 
 			foreach ($translations as $language => $page_id) {
 				$lang_urls[$language] = strtolower(str_replace(" ", "-", get_the_title($page_id)));
-				/* if($language == "en"){
+				if($language == "en"){
 					//find page based on mutual slug — let's put this on hold
-					update_post_meta($page['id'], 'nativeSlug', get_post_field('post_name',$page_id));
-				} */
+					$value['nativeSlug'] = $lang_urls[$language];
+					update_post_meta($page['id'], 'nativeSlug', $lang_urls[$language]);
+				}
 
 			}
 			$value['hreflangs'] = $lang_urls;
@@ -240,9 +258,9 @@ add_action('rest_api_init', function () {
 
 			$value['meta']['description'] = get_post_meta($page['id'], '_seopress_titles_desc', true);
 
-			$value['meta']['facebook']['img'] = get_post_meta($category['id'], '_seopress_social_fb_img', true);
+			$value['meta']['facebook']['img'] = get_post_meta($page['id'], '_seopress_social_fb_img', true);
 
-			$value['meta']['twitter']['img'] = get_post_meta($category['id'], '_seopress_social_twitter_img', true);
+			$value['meta']['twitter']['img'] = get_post_meta($page['id'], '_seopress_social_twitter_img', true);
 
 			$value['content'] =  apply_filters('the_content', get_the_content($page['id']));
 
