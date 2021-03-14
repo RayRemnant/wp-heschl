@@ -176,8 +176,8 @@ add_action('rest_api_init', function () {
 				$value['hreflangs'][$language] = strtolower(str_replace(" ", "-", $lang_category_data->name));
 			}
 
-			$value['time']['published'] = get_option('gmt_offset') == 0 ? subStr(get_the_date('c', $post['id']), 0, 19)."Z" : get_the_date('c', $post['id']); 
-			$value['time']['modified'] = get_option('gmt_offset') == 0 ? subStr(get_the_modified_date('c', $post['id']), 0, 19)."Z" : get_the_modified_date('c', $post['id']); 
+			$value['time']['published'] = get_option('gmt_offset') == 0 ? subStr(get_the_date('c', $category['id']), 0, 19)."Z" : get_the_date('c', $category['id']); 
+			$value['time']['modified'] = get_option('gmt_offset') == 0 ? subStr(get_the_modified_date('c', $category['id']), 0, 19)."Z" : get_the_modified_date('c', $category['id']); 
 
 			$value['meta']['title'] = empty(get_term_meta($category['id'], '_seopress_titles_title', true)) ? $value['title'] : get_term_meta($category['id'], '_seopress_titles_title', true);
 
@@ -352,13 +352,13 @@ add_action('rest_api_init', function () {
 			}
 
 			//THE REST...
-			$value['meta']['title'] = empty(get_post_meta($page['id'], '_seopress_titles_title', true)) ? $value['title'] : get_post_meta($page['id'], '_seopress_titles_title', true);
+			$value['meta']['title'] = empty(get_post_meta($post['id'], '_seopress_titles_title', true)) ? $value['title'] : get_post_meta($post['id'], '_seopress_titles_title', true);
 
 			$value['meta']['description'] = get_post_meta($post['id'], '_seopress_titles_desc', true);
 
-			$value['meta']['facebook']['img'] = get_post_meta($category['id'], '_seopress_social_fb_img', true);
+			$value['meta']['facebook']['img'] = get_post_meta($post['id'], '_seopress_social_fb_img', true);
 
-			$value['meta']['twitter']['img'] = get_post_meta($category['id'], '_seopress_social_twitter_img', true);
+			$value['meta']['twitter']['img'] = get_post_meta($post['id'], '_seopress_social_twitter_img', true);
 
 			$value['content'] =  apply_filters('the_content', get_the_content($post['id']));
 
