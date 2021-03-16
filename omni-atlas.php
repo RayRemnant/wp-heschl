@@ -5,8 +5,12 @@
 function clean_image_code($content)
 {
 	global $post;
-	$pattern = '/(?:<div class=\"wp-block-image\">)?<figure class=\"(aligncenter|alignleft|alignright)?[A-Za-z- ]*\"><img(?:.+?)src="(.+?)(\.[^\."]+)"(.*?)class=\".*?\"(.*?)>(<figcaption>.*?<\/figcaption>)?<\/figure>(?:<\/div>)?/i';
+	/* $pattern = '/(?:<div class=\"wp-block-image\">)?<figure class=\"(aligncenter|alignleft|alignright)?[A-Za-z- ]*\"><img(?:.+?)src="(.+?)(\.[^\."]+)"(.*?)class=\".*?\"(.*?)>(<figcaption>.*?<\/figcaption>)?<\/figure>(?:<\/div>)?/i';
 	$replacement   = '<figure class="content-figure $1"><picture><source srcset="$2.webp" type="image/webp"><source srcset="$2.jpg" type="image/jpeg"><img loading="lazy" src="$2$3" class="content-image" $4$5></picture>$6</figure>';
+	$content = preg_replace($pattern, $replacement, $content); */
+
+	$pattern = '/(?:<div class=\"wp-block-image\">)?<figure class=\"(aligncenter|alignleft|alignright)?[A-Za-z- ]*\"><img loading="lazy" width="(.+?)" height="(.+?)" src="(.+?)(\.[^\."]+)"(.*?)class=\".*?\"(.*?)>(<figcaption>.*?<\/figcaption>)?<\/figure>(?:<\/div>)?/i';
+	$replacement   = '<figure class="content-figure $1"><picture style="width:$2px;height:$3px"><source srcset="$4.webp" type="image/webp"><source srcset="$4.jpg" type="image/jpeg"><img loading="lazy" src="$4$5" class="content-image" $6$7></picture>$8</figure>';
 	$content = preg_replace($pattern, $replacement, $content);
 
 	$pattern = '/content\/original\//i';
