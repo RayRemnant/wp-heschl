@@ -83,7 +83,11 @@ registerBlockType("rayremnant/archon-product", {
 
 			if (props.attributes.collection == "product") {
 				props.setAttributes({
-					name: (data.name.full + " " + (data.name.capacity || "")).trim(),
+					name: (
+						(data.code || "") +
+						" " +
+						(data.name.full + " " + (data.name.capacity || ""))
+					).trim(),
 				});
 			}
 
