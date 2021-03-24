@@ -33,7 +33,6 @@ add_filter('the_content', 'clean_image_code');
 
 function clean_code($content)
 {
-	global $post;
 	$pattern = '/<hr.*>/i';
 	$replacement   = '<hr>';
 	$content       = preg_replace($pattern, $replacement, $content);
@@ -68,7 +67,15 @@ function clean_code($content)
 	return $content;
 }
 add_filter('the_content', 'clean_code');
+function category_desc_filter( $content ) {
+	$site_url = str_replace('/', '\/', get_site_url());
+	$pattern = '/' . $site_url . '\/[A-z]+\//i';
+	$replacement   = '<BLOG>';
+	$content       = preg_replace($pattern, $replacement, $content);
 
+	return $content;
+ }
+ add_filter( 'category_description', 'category_desc_filter' );
 /*
 add_action( 'rest_api_init', function () {
     register_rest_field( 'post', 'all_meta', array(
