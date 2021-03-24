@@ -51,6 +51,12 @@ function clean_code($content)
 	$replacement   = 'href="<PATH>#';
 	$content       = preg_replace($pattern, $replacement, $content);
 
+	$site_url = str_replace('/', '\/', get_site_url());
+
+	$pattern = '/' . $site_url . '\/[A-z]+\//i';
+	$replacement   = '<BLOG>';
+	$content       = preg_replace($pattern, $replacement, $content);
+
 	$pattern = '/class="wp-block-quote"/i';
 	$replacement   = '';
 	$content       = preg_replace($pattern, $replacement, $content);
