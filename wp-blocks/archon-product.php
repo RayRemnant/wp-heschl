@@ -82,10 +82,9 @@ function archon_product_render( $attributes ) {
         }
     }
 
-    
+    $attributes['text'] = ($attributes['text'] == "null") ? null : $attributes['text'];
     
   ob_start();
   echo '<script>CONTENT_BLOCK_SEPARATOR{"query": { "textQuery":' . $attributes['name'] . ',"collection":' . $attributes['collection'] . '},"text":"'. preg_replace('/"/i', "", $attributes['text'])  .'","blockType":"postProduct1"}CONTENT_BLOCK_SEPARATOR</script>';
-  //  echo '<script>CONTENT_BLOCK_SEPARATOR{"query": { "textQuery":' . $attributes['name'] . ',"collection":' . $attributes['collection'] . '},"text":'. isset($attributes['text']) ? '"' . preg_replace('/"/i', "", $attributes['text']) . '"' : "null" .',"blockType":"postProduct1"}CONTENT_BLOCK_SEPARATOR</script>';
   return ob_get_clean();
   }
