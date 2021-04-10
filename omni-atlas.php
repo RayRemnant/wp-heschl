@@ -78,6 +78,10 @@ function category_desc_filter( $content ) {
 	$replacement   = '<figure class="content-figure $1"><picture style="width:$5px;height:$6px"><source srcset="$2.webp" type="image/webp"><source srcset="$2.jpg" type="image/jpeg"><img loading="lazy" src="$2$3" class="content-image"$7></picture></figure>	';
 	$content = preg_replace($pattern, $replacement, $content);
 
+	$pattern = '/content\/original\//i';
+	$replacement   = 'content/';
+	$content       = preg_replace($pattern, $replacement, $content);
+
 	return $content;
  }
  add_filter( 'category_description', 'category_desc_filter' );
