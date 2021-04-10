@@ -67,11 +67,16 @@ function clean_code($content)
 	return $content;
 }
 add_filter('the_content', 'clean_code');
+
 function category_desc_filter( $content ) {
 	$site_url = str_replace('/', '\/', get_site_url());
 	$pattern = '/' . $site_url . '\/[A-z]+\//i';
 	$replacement   = '<BLOG>';
 	$content       = preg_replace($pattern, $replacement, $content);
+
+	$pattern = '/<img class=\"[A-Za-z0-9- ]*(aligncenter|alignleft|alignright)\" src="(.+?)(\.[^\."]+)" alt="([^"]+)?" width="(.+?)" height="(.+?)"(.*?)>/i';
+	$replacement   = '<figure class="content-figure $1"><picture style="width:$5px;height:$6px"><source srcset="$2.webp" type="image/webp"><source srcset="$2.jpg" type="image/jpeg"><img loading="lazy" src="$2$3" class="content-image"$7></picture></figure>	';
+	$content = preg_replace($pattern, $replacement, $content);
 
 	return $content;
  }
