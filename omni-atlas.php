@@ -205,7 +205,7 @@ add_action('rest_api_init', function () {
 			$value['time']['published'] = get_option('gmt_offset') == 0 ? subStr(get_the_date('c', $category['id']), 0, 19)."Z" : get_the_date('c', $category['id']); 
 			$value['time']['modified'] = get_option('gmt_offset') == 0 ? subStr(get_the_modified_date('c', $category['id']), 0, 19)."Z" : get_the_modified_date('c', $category['id']); 
 
-			$value['meta']['title'] = empty(get_term_meta($category['id'], '_seopress_titles_title', true)) ? $value['title'] : get_term_meta($category['id'], '_seopress_titles_title', true);
+			$value['meta']['title'] = empty(get_term_meta($category['id'], '_seopress_titles_title', true)) ? "" : get_term_meta($category['id'], '_seopress_titles_title', true);
 
 			$value['meta']['description'] = get_term_meta($category['id'], '_seopress_titles_desc', true);
 
