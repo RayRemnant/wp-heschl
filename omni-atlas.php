@@ -374,7 +374,7 @@ add_action('rest_api_init', function () {
 
 			update_post_meta($post['id'], 'tags', $value['tags']);
 
-			$main = get_post_meta($post['id'], 'main', true);
+			$main = get_post_meta($post['id'], 'cardinal', true);
 			if(!empty($main)){
 				$value["main"] = $main;
 				update_post_meta($post['id'], 'main', $main);
