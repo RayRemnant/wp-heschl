@@ -249,8 +249,8 @@ add_action('rest_api_init', function () {
 			$value['excerpt'] = get_the_excerpt($page['id']);
 
 			$image = get_the_post_thumbnail_url($page['id']);
-
-			if (!empty($image)) {
+			
+			if (!empty($image) && $image != "/") {
 				$image = pathinfo($image);
 				$value['image'] = $image['dirname'] . "/" . $image['filename'];
 			};
@@ -314,8 +314,10 @@ add_action('rest_api_init', function () {
 			$value['time']['published'] = get_option('gmt_offset') == 0 ? subStr(get_the_date('c', $post['id']), 0, 19)."Z" : get_the_date('c', $post['id']); 
 			$value['time']['modified'] = get_option('gmt_offset') == 0 ? subStr(get_the_modified_date('c', $post['id']), 0, 19)."Z" : get_the_modified_date('c', $post['id']); 
 
-			$image = pathinfo(get_the_post_thumbnail_url($post['id']));
-			if (!empty($image)) {
+			$image = get_the_post_thumbnail_url($post['id']);
+			
+			if (!empty($image) && $image != "/") {
+				$image = pathinfo($image);
 				$value['image'] = str_replace("original/", "", $image['dirname'] . "/" . $image['filename']) ;
 			};
 
@@ -372,9 +374,11 @@ add_action('rest_api_init', function () {
 
 			update_post_meta($post['id'], 'tags', $value['tags']);
 
-			$pillar = get_post_meta($post['id'], 'cardinal', true);
-			if(!empty($pillar)){
-				$value["cardinal"] = $pillar;
+			$main = get_post_meta($post['id'], 'main', true);
+			if(!empty($main)){
+				$value["main"] = $main;
+				update_post_meta($post['id'], 'main', $pillar);
+				delete_post_meta($post['id'], 'cardinal');
 			}
 
 			//THE REST...
