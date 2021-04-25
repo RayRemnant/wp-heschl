@@ -377,7 +377,7 @@ add_action('rest_api_init', function () {
 			$main = get_post_meta($post['id'], 'main', true);
 			if(!empty($main)){
 				$value["main"] = $main;
-				update_post_meta($post['id'], 'main', $pillar);
+				update_post_meta($post['id'], 'main', $main);
 				delete_post_meta($post['id'], 'cardinal');
 			}
 
