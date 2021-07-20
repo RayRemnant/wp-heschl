@@ -47,7 +47,7 @@ function clean_code($content)
 
 	//<PATH> is replaced during build on hydra-aeon
 	$pattern = '/href=\"#/i';
-	$replacement   = 'href="<PATH>#';
+	$replacement   = 'href="<PATH>/#';
 	$content       = preg_replace($pattern, $replacement, $content);
 
 	$site_url = str_replace('/', '\/', get_site_url());
